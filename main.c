@@ -14,14 +14,14 @@ int count_lines();
 CONTACT *create_arr(int size);
 void first_load(CONTACT *arr, int size);
 void show_contacts(CONTACT *arr, int size);
-void add_contacts();
+void add_contacts(CONTACT *arr, int size);
 void delete_contacts();
 void search_contacts();
 void load_from_file();
 
 int main(void) {
     int lines_of_file = count_lines();
-    CONTACT *arr = create_arr(lines_of_file);
+    CONTACT *arr = create_arr(lines_of_file+2);
     first_load(arr, lines_of_file);
     while(1) {
         print_menu();
@@ -47,7 +47,7 @@ void menu(CONTACT *arr, int size) {
     scanf(" %d", &option);
     switch (option) {
         case 1: show_contacts(arr, size); break;
-        case 2: add_contacts(); break;
+        case 2: add_contacts(arr, size); break;
         case 3: delete_contacts(); break;
         case 4: search_contacts(); break;
         case 5: load_from_file(); break;
@@ -101,7 +101,27 @@ void show_contacts(CONTACT *arr, int size) {
         printf("%d. %s %s %d %s\n", i+1, (arr+i) -> first_name, (arr+i) -> last_name, (arr+i) -> phone_number, (arr+i) -> email);
     }
 }
-void add_contacts() {}
+void add_contacts(CONTACT *arr, int size) {
+    FILE *file = fopen("contacts.txt", "a");
+    CONTACT add = {};
+    printf("Enter name: ");
+    scanf("%s", add.first_name);
+    printf("Enter last name: ");
+    scanf("%s", add.last_name);
+    printf("Enter phone number: ");
+    scanf("%d", &add.phone_number);
+    printf("Enter email: ");
+    scanf("%s", add.email);
+
+    int result = fprintf(file, "%s;%s;%d;%s\n", add.first_name, add.last_name, add.phone_number, add.email);
+
+    if (result > 0) {
+        printf("Contact added\n");
+    } else {
+        printf("Error");
+    }
+    fclose(file);
+}
 void delete_contacts() {}
 void search_contacts() {}
 void load_from_file() {}

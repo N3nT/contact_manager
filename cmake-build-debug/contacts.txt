@@ -1,2 +1,7 @@
 Jan;Kowalski;123456789;jan@kowalski.com
 Michal;Kret;987543123;michal@kret.com
+Bartosz;Widlak;123456789;bartosz.widlak@op.pl
+Julian;Krawczyk;786432567;julkrawczyk@op.pl
+Hubert;Maklowicz;456123789;hubi11@wp.pl
+Michal;Plor;2465317998;michalekpl78@interia.pl
+Piotr;Maslak;696696969;maslak123@o2.pl
