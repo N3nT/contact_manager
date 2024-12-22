@@ -1,0 +1,3 @@
+C:/Users/Bartosz W/CLionProjects/contact_manager/cmake-build-debug/CMakeFiles/contact_manager.dir
+C:/Users/Bartosz W/CLionProjects/contact_manager/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Bartosz W/CLionProjects/contact_manager/cmake-build-debug/CMakeFiles/rebuild_cache.dir

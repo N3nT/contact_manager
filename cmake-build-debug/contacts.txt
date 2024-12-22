@@ -1,0 +1,2 @@
+Jan;Kowalski;123456789;jan@kowalski.com
+Michal;Kret;987543123;michal@kret.com
