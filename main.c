@@ -20,10 +20,12 @@ void search_contacts();
 void load_from_file();
 
 int main(void) {
-    int lines_of_file = count_lines();
-    CONTACT *arr = create_arr(lines_of_file+2);
-    first_load(arr, lines_of_file);
+    CONTACT *arr;
     while(1) {
+        int lines_of_file = count_lines();
+        free(arr);
+        arr = create_arr(lines_of_file+2);
+        first_load(arr, lines_of_file);
         print_menu();
         menu(arr, lines_of_file);
     }
