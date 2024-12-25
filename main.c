@@ -39,7 +39,8 @@ void print_menu() {
     printf("3. Delete contact\n");
     printf("4. Search contact\n");
     printf("5. Load contacts from file\n");
-    printf("6. Exit\n");
+    printf("6. Export\n");
+    printf("7. Exit\n");
     printf("---------------\n\n");
 }
 
@@ -53,7 +54,8 @@ void menu(CONTACT *arr, int size) {
         case 3: delete_contacts(); break;
         case 4: search_contacts(); break;
         case 5: load_from_file(); break;
-        case 6: exit(1); break;
+        //case 6:
+        case 7: exit(1); break;
         default: printf("Wrong option\n"); break;
     }
 }
@@ -124,6 +126,28 @@ void add_contacts(CONTACT *arr, int size) {
     }
     fclose(file);
 }
-void delete_contacts() {}
+void delete_contacts() {
+    FILE *file = fopen("contacts.txt", "a+");
+    FILE *temp = fopen("temp.txt", "w");
+    int index;
+    int current_line = 1;
+    char buffer[100];
+    printf("Enter index of contact to delete: ");
+    scanf("%d", &index);
+    if (index <= 0 && index > count_lines()) {
+        printf("Wrong index\n");
+    } else {
+        while (fgets(buffer, 100, file) != NULL) {
+            if(current_line != index) {
+                fputs(buffer, temp);
+            }
+            current_line++;
+        }
+        fclose(file);
+        fclose(temp);
+        remove("contacts.txt");
+        rename("temp.txt", "contacts.txt");
+    }
+}
 void search_contacts() {}
 void load_from_file() {}

@@ -1,4 +1,3 @@
-Jan;Kowalski;123456789;jan@kowalski.com
 Michal;Kret;987543123;michal@kret.com
 Bartosz;Widlak;123456789;bartosz.widlak@op.pl
 Julian;Krawczyk;786432567;julkrawczyk@op.pl
