@@ -99,7 +99,7 @@ void first_load(CONTACT *arr, int size) {
             printf("Error reading line\n");
             break;
         }
-        sscanf(buffer, "%19[^;];%19[^;];%d;%39s",
+        sscanf(buffer, "%19[^,],%19[^,],%d,%39s",
             arr[i].first_name,
             arr[i].last_name,
             &arr[i].phone_number,
@@ -125,7 +125,7 @@ void add_contacts(CONTACT *arr, int size) {
     printf("Enter email: ");
     scanf("%s", add.email);
 
-    int result = fprintf(file, "%s;%s;%d;%s\n", add.first_name, add.last_name, add.phone_number, add.email);
+    int result = fprintf(file, "%s,%s,%d,%s\n", add.first_name, add.last_name, add.phone_number, add.email);
 
     if (result > 0) {
         printf("Contact added\n");
@@ -200,8 +200,6 @@ void search_contacts() {
     }
     fclose(file);
 }
-void load_from_file() {}
-void export(){}
 
 //search_contacts subfunctions
 //TO-DO maybe one function is enough
@@ -211,7 +209,7 @@ CONTACT search_by_string(FILE *file, int type, char *string) {
     char buffer[100];
     CONTACT search = {};
     while (fgets(buffer, 100, file) != NULL) {
-        sscanf(buffer, "%19[^;];%19[^;];%d;%39s",
+        sscanf(buffer, "%19[^,],%19[^,],%d,%39s",
             search.first_name,
             search.last_name,
             &search.phone_number,
@@ -238,7 +236,7 @@ CONTACT search_by_number(FILE *file, int number) {
     char buffer[100];
     CONTACT search = {};
     while (fgets(buffer, 100, file) != NULL) {
-        sscanf(buffer, "%19[^;];%19[^;];%d;%39s",
+        sscanf(buffer, "%19[^,],%19[^,],%d,%39s",
             search.first_name,
             search.last_name,
             &search.phone_number,
@@ -250,4 +248,35 @@ CONTACT search_by_number(FILE *file, int number) {
     memset(&search, 0, sizeof(search));
     strcpy(search.first_name, "");
     return search;
+}
+
+void load_from_file() {}
+
+void export(){
+    int format_input = 0;
+    char *format;
+    char *path = getenv("USERPROFILE");
+    strcat(path, "\\Desktop\\output.csv");
+    //TO-DO choose format
+    // printf("1. txt\n"
+    //        "2. csv\n"
+    //        "Choose format: ");
+    // scanf("%d", format_input);
+    // switch(format_input) {
+    //     case 1: format = "txt"; break;
+    //     case 2: format = "csv"; break;
+    //     default: {
+    //         printf("Wrong input\n");
+    //         exit(0);
+    //     }
+    // }
+    // strcat(path, format);
+    char buffer[100];
+    FILE *file = fopen("contacts.txt", "r");
+    FILE *output = fopen(path, "w");
+    while (fgets(buffer, 100, file) != NULL) {
+        fputs(buffer, output);
+    }
+    fclose(file);
+    fclose(output);
 }
