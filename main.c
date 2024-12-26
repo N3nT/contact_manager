@@ -1,5 +1,7 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct contact {
     char first_name[20];
@@ -17,7 +19,13 @@ void show_contacts(CONTACT *arr, int size);
 void add_contacts(CONTACT *arr, int size);
 void delete_contacts();
 void search_contacts();
+
+//search_contacts subfunction
+CONTACT search_by_string(FILE *file, int type, char *string);
+CONTACT search_by_number(FILE *file, int number);
+
 void load_from_file();
+void export();
 
 int main(void) {
     CONTACT *arr;
@@ -54,8 +62,8 @@ void menu(CONTACT *arr, int size) {
         case 3: delete_contacts(); break;
         case 4: search_contacts(); break;
         case 5: load_from_file(); break;
-        //case 6:
-        case 7: exit(1); break;
+        case 6: export(); break;
+        case 7: exit(1);
         default: printf("Wrong option\n"); break;
     }
 }
@@ -149,5 +157,97 @@ void delete_contacts() {
         rename("temp.txt", "contacts.txt");
     }
 }
-void search_contacts() {}
+void search_contacts() {
+    FILE *file = fopen("contacts.txt", "r");
+    int answer, number;
+    char *search;
+    CONTACT found = {};
+    printf("Search by:\n"
+           "1. First name\n"
+           "2. Last name\n"
+           "3. Phone number\n"
+           "4. Email\n"
+           "5. Exit\n");
+    scanf("%d", &answer);
+    switch(answer) {
+        case 1: {
+            printf("Enter name: ");
+            scanf("%s", search);
+            found = search_by_string(file, 1, search);
+        } break;
+        case 2: {
+            printf("Enter lastname: ");
+            scanf("%s", search);
+            found = search_by_string(file, 2, search);
+        } break;
+        case 3: {
+            printf("Enter phone number: ");
+            scanf("%d", &number);
+            found = search_by_number(file, number);
+        }break;
+        case 4: {
+            printf("Enter email: ");
+            scanf("%s", search);
+            found = search_by_string(file, 3, search);
+        }break;
+        case 5:printf("Exit\n");break;
+        default:printf("Wrong answer\n");break;
+    }
+    if(strcmp(found.first_name, "") == 0) {
+        printf("Not found\n");
+    } else {
+        printf("%s %s %d %s\n", found.first_name, found.last_name, found.phone_number, found.email);
+    }
+    fclose(file);
+}
 void load_from_file() {}
+void export(){}
+
+//search_contacts subfunctions
+//TO-DO maybe one function is enough
+CONTACT search_by_string(FILE *file, int type, char *string) {
+    //types: 1-firstname 2-lastname 3-email
+    //TO-DO case sensitivity
+    char buffer[100];
+    CONTACT search = {};
+    while (fgets(buffer, 100, file) != NULL) {
+        sscanf(buffer, "%19[^;];%19[^;];%d;%39s",
+            search.first_name,
+            search.last_name,
+            &search.phone_number,
+            search.email);
+        if (type == 1) {
+            if (strcmp(search.first_name, string) == 0) {
+                return search;
+            }
+        } else if (type == 2) {
+            if (strcmp(search.last_name, string) == 0) {
+                return search;
+            }
+        } else if (type == 3) {
+            if (strcmp(search.email, string) == 0) {
+                return search;
+            }
+        }
+    }
+    memset(&search, 0, sizeof(search));
+    strcpy(search.first_name, "");
+    return search;
+}
+CONTACT search_by_number(FILE *file, int number) {
+    char buffer[100];
+    CONTACT search = {};
+    while (fgets(buffer, 100, file) != NULL) {
+        sscanf(buffer, "%19[^;];%19[^;];%d;%39s",
+            search.first_name,
+            search.last_name,
+            &search.phone_number,
+            search.email);
+        if (number == search.phone_number) {
+            return search;
+        }
+    }
+    memset(&search, 0, sizeof(search));
+    strcpy(search.first_name, "");
+    return search;
+}
