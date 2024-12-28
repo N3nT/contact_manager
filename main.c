@@ -250,7 +250,25 @@ CONTACT search_by_number(FILE *file, int number) {
     return search;
 }
 
-void load_from_file() {}
+void load_from_file() {
+    char *path;
+    char buffer[100];
+    FILE *file = fopen("contacts.txt", "a");
+    printf("Enter file path to export(txt or csv): ");
+    scanf("%s", path);//TO-DO check if file is txt or csv
+    FILE *import = fopen(path, "r");
+    if(import == NULL) {
+        printf("File not found\n");
+        exit(0);
+    }
+    while(fgets(buffer, 100, import) != NULL){
+        fputs(buffer, file);
+    }
+    fputs("\n", file);
+    printf("Contacts loaded\n");
+    fclose(file);
+    fclose(import);
+}
 
 void export(){
     int format_input = 0;
